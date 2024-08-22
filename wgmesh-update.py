@@ -8,25 +8,49 @@ Args = argparse.Namespace
 
 
 def system(cmd: list[str]) -> str:
+    print(cmd)
     p = subprocess.run(cmd, check=True, capture_output=True)
     return p.stdout.decode('ascii')
 
 
+def parse_endpoints(blob : str) -> dict[str, str]:
+    return dict(
+        line.split('\t')
+        for line in blob.split('\n')
+        if line
+    )
+
+
 def update_endpoints(args: Args) -> None:
-    peers = {
+    peers = [
         pk
         for pk in system(['wg', 'show', args.iface, 'peers']).split()
         if pk
-    }
+    ]
 
-    info = urllib.request.urlopen(args.url_hub).read().decode('ascii')
-    for line in info.split('\n'):
-        if not line:
+    endpoints_hub = parse_endpoints(
+        urllib.request.urlopen(args.url_hub).read().decode('ascii')
+    )
+
+    endpoints_local = parse_endpoints(
+        system(['wg', 'show', 'all', 'endpoints'])
+    )
+
+    for peer in peers:
+        endpoint_hub = endpoints_hub.get(peer)
+        if not endpoint_hub:
+            # no info from hub, can't do anything
             continue
 
-        pubkey, endpoint = line.split('\t')
-        if pubkey in peers:
-            system(['wg', 'set', args.iface, 'peer', pubkey, 'endpoint', endpoint])
+        endpoint_local = endpoints_local.get(peer)
+        if endpoint_local == endpoint_hub:
+            # already up to date
+            continue
+
+        # we need to update the endpoint
+        system([
+            'wg', 'set', args.iface, 'peer', peer, 'endpoint', endpoint_hub
+        ])
 
 
 def main(args: Args) -> None:
