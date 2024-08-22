@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import urllib.request
+import logging
+import logging.handlers
 import argparse
 import subprocess
-import logging
+import urllib.request
 
 Args = argparse.Namespace
 log = logging.getLogger('wgmesh-update')
@@ -63,9 +64,18 @@ def update_endpoints(args: Args) -> None:
 
 
 def main(args: Args) -> None:
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO
-    )
+    if args.syslog:
+        hnd = logging.handlers.SysLogHandler('/dev/log')
+        hnd.ident = 'wgmesh-update: '
+
+        root = logging.getLogger(None)
+        root.addHandler(hnd)
+        root.setLevel(logging.INFO)
+    else:
+        logging.basicConfig(
+            level=logging.DEBUG if args.verbose else logging.INFO
+        )
+
     update_endpoints(args)
 
 
@@ -74,4 +84,5 @@ if __name__ == '__main__':
     ap.add_argument('iface')
     ap.add_argument('url_hub')
     ap.add_argument('-v', '--verbose', action='store_true')
+    ap.add_argument('--syslog', action='store_true')
     main(ap.parse_args())
