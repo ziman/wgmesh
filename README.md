@@ -5,11 +5,12 @@ Like tailscale but without the junk.
 ## topology
 
 1. hub server: used only for coordination, untrusted, needs public ip address
-2. node: connects to the hub to obtain the public addresses of other nodes
-3. node connects to other nodes directly using the public addresses
+2. a malicious hub should only be able to cause DoS
+3. node: connects to the hub to obtain the public addresses of other nodes
+4. node connects to other nodes directly using the public addresses
    obtained from the hub
-4. the hub is untrusted, access control is performed by each node separately
-5. no central config file; use something like `cdist` or `puppet` to config each node
+5. the hub is untrusted, access control is performed by each node separately
+6. no central config file; use something like `cdist` or `puppet` to config each node
 
 ## usage
 
