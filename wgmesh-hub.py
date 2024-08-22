@@ -15,14 +15,19 @@ def main(args : Args) -> None:
                 ['wg', 'show', args.iface, 'endpoints'],
                 check=True, capture_output=True,
             )
+
+            self.send_response(200, 'OK')
+            self.send_header('Content-Type', 'text/plain')
+            self.end_headers()
             self.wfile.write(wg.stdout)
 
-    with socketserver.TCPServer((args.bind, args.port), Handler) as httpd:
+    socketserver.TCPServer.allow_reuse_address = True
+    with socketserver.TCPServer((args.addr, args.port), Handler) as httpd:
         httpd.serve_forever()
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('iface')
     ap.add_argument('addr')
-    ap.add_argument('port')
+    ap.add_argument('--port', type=int, default=4137)
     main(ap.parse_args())
