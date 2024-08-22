@@ -1,6 +1,6 @@
 # wgmesh
 
-Tailscale but without the junk.
+Like tailscale but without the junk.
 
 ## topology
 
@@ -25,7 +25,7 @@ Tailscale but without the junk.
 ## related work
 
 * [meshub](https://github.com/ziman/meshub) is a roll-your-own version of this
-  from the era before wireguard.
+  kind of VPN from the era before wireguard.
 
 * see [meshub#related-projects](https://github.com/ziman/meshub?tab=readme-ov-file#related-projects)
   for other related work
