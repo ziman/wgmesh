@@ -15,7 +15,10 @@ Like tailscale but without the junk.
 
 1. run wireguard + `wgmesh-hub` on the hub machine
 2. open the hub port in the wg interface on the hub machine
-3. run wireguard on the actual nodes and have it connect to the hub
+3. run wireguard on the actual nodes and have it connect to the hub.
+   You need normal wireguard config files, you just don't need the `Endpoint`
+   fields (except for the hub node). `Endpoint` fields will be filled in
+   at runtime by `wgmesh-update.py`.
 4. the connection to the hub is used only to get information about other nodes
 5. Run `wgmesh-update.py` periodically on each node. This will obtain other nodes'
    public addresses from the hub and set them in the local wg config.
