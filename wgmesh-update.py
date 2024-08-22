@@ -70,7 +70,9 @@ def main(args: Args) -> None:
 
         root = logging.getLogger(None)
         root.addHandler(hnd)
-        root.setLevel(logging.INFO)
+        root.setLevel(
+            logging.DEBUG if args.verbose else logging.INFO
+        )
     else:
         logging.basicConfig(
             level=logging.DEBUG if args.verbose else logging.INFO
