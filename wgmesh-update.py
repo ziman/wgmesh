@@ -32,10 +32,12 @@ def update_endpoints(args: Args) -> None:
     endpoints_hub = parse_endpoints(
         urllib.request.urlopen(args.url_hub).read().decode('ascii')
     )
+    log.debug('endpoints_hub = %s', endpoints_hub)
 
     endpoints_local = parse_endpoints(
         system(['wg', 'show', args.iface, 'endpoints'])
     )
+    log.debug('endpoints_local = %s', endpoints_local)
 
     for peer in peers:
         endpoint_hub = endpoints_hub.get(peer)
