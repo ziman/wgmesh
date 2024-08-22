@@ -24,7 +24,8 @@ Like tailscale but without the junk.
    public addresses from the hub and set them in the local wg config.
 6. Now the nodes can (hopefully) talk to one another.
 7. Since the hub is untrusted, nodes should also firewall the wg connection to the hub.
-   Or not. Up to your threat model.
+   Or not. Up to your threat model. A good compromise could be leaving port 22 open
+   to have relayed ssh access if p2p edges are broken and firewall everything else.
 
 ## related work
 
