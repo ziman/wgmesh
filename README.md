@@ -12,6 +12,9 @@ Like tailscale but without the junk.
 5. the hub is untrusted, access control is performed by each node separately
 6. no central config file; use something like `cdist` or `puppet` to config each node
 
+The idea is that you run wgmesh on top of an existing wireguard configuration
+and it'll update `Endpoint` parameters automatically as they change.
+
 ## usage
 
 1. run wireguard + `wgmesh-hub` on the hub machine
