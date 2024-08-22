@@ -43,7 +43,7 @@ def update_endpoints(args: Args) -> None:
 
     for peer in peers:
         endpoint_hub = endpoints_hub.get(peer)
-        if not endpoint_hub:
+        if (not endpoint_hub) or (endpoint_hub == '(none)'):
             # no info from hub, can't do anything
             log.debug('peer %s is not known by the hub', peer)
             continue
