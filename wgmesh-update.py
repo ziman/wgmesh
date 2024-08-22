@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import time
 import logging
 import logging.handlers
 import argparse
@@ -78,7 +79,13 @@ def main(args: Args) -> None:
             level=logging.DEBUG if args.verbose else logging.INFO
         )
 
-    update_endpoints(args)
+    if args.interval_sec:
+        while True:
+            update_endpoints(args)
+            time.sleep(args.interval_sec)
+    else:
+        # just run the update once
+        update_endpoints(args)
 
 
 if __name__ == '__main__':
@@ -87,4 +94,5 @@ if __name__ == '__main__':
     ap.add_argument('url_hub')
     ap.add_argument('-v', '--verbose', action='store_true')
     ap.add_argument('--syslog', action='store_true')
+    ap.add_argument('--interval-sec', type=int)
     main(ap.parse_args())
