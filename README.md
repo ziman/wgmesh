@@ -20,7 +20,8 @@ Like tailscale but without the junk.
 5. Run `wgmesh-update.py` periodically on each node. This will obtain other nodes'
    public addresses from the hub and set them in the local wg config.
 6. Now the nodes can (hopefully) talk to one another.
-7. since the hub is untrusted, nodes should also firewall the wg connection to the hub
+7. Since the hub is untrusted, nodes should also firewall the wg connection to the hub.
+   Or not. Up to your threat model.
 
 ## related work
 
